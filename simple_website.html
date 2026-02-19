@@ -1,0 +1,387 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>WizrdTweaks</title>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;800&display=swap" rel="stylesheet">
+  <style>
+    * { box-sizing: border-box; }
+    body {
+      margin: 0;
+      font-family: Inter, Arial, sans-serif;
+      background: #000;
+      color: #fff;
+      scroll-behavior: smooth;
+      overflow-x: hidden;
+    }
+
+    /* SCREEN-WIDE HORROR BLOOD */
+    .blood {
+      position: fixed;
+      inset: 0;
+      pointer-events: none;
+      z-index: 1; /* below header */
+      overflow: hidden;
+    }
+    }
+
+    /* top smear */
+    .blood::before {
+      content: "";
+      position: absolute;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 120px;
+      background:
+        radial-gradient(ellipse at 10% 100%, #4a0000 0%, #1a0000 60%, transparent 70%),
+        radial-gradient(ellipse at 30% 100%, #5c0000 0%, #220000 60%, transparent 70%),
+        radial-gradient(ellipse at 55% 100%, #6e0000 0%, #260000 60%, transparent 70%),
+        radial-gradient(ellipse at 75% 100%, #520000 0%, #1d0000 60%, transparent 70%),
+        radial-gradient(ellipse at 90% 100%, #600000 0%, #200000 60%, transparent 70%);
+      filter: blur(2px);
+    }
+
+    .drop {
+      position: absolute;
+      top: -120px;
+      width: 10px;
+      height: 140px;
+      background: linear-gradient(#2a0000 0%, #7a0000 40%, #ff1a1a 100%);
+      border-radius: 50px 50px 60px 60px;
+      box-shadow: 0 0 6px #3a0000, inset 0 -10px 12px rgba(0,0,0,.6);
+      animation: drip linear infinite;
+      opacity: .9;
+    }
+
+    /* tail */
+    .drop::after {
+      content: "";
+      position: absolute;
+      bottom: -40px;
+      left: 50%;
+      transform: translateX(-50%);
+      width: 4px;
+      height: 60px;
+      background: linear-gradient(#7a0000,#ff1a1a);
+      border-radius: 4px;
+      filter: blur(.5px);
+    }
+
+    @keyframes drip {
+      0% { transform: translateY(-150px) scaleY(.8); }
+      70% { transform: translateY(70vh) scaleY(1); }
+      100% { transform: translateY(120vh) scaleY(1.1); }
+    }
+      100% { transform: translateY(120vh); }
+    }
+
+    header {
+      z-index: 20; /* keep above blood */
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      padding: 18px 40px;
+      border-bottom: 1px solid #222;
+      background: rgba(0,0,0,0.85);
+      backdrop-filter: blur(6px);
+      position: sticky;
+      top: 0;
+      z-index: 10;
+    }
+    .logo {
+      font-weight: 800;
+      font-size: 1.3rem;
+      letter-spacing: 1px;
+      color: #fff;
+    }
+    nav a {
+      color: #aaa;
+      margin-left: 25px;
+      text-decoration: none;
+      font-weight: 500;
+    }
+    nav a:hover { color: #fff; }
+
+    .hero {
+      text-align: center;
+      padding: 110px 20px 80px;
+      position: relative;
+      z-index: 1;
+      animation: fadeUp 1s ease forwards;
+    }
+    .hero h1 { font-size: 3.2rem; margin: 0 0 15px; font-weight: 800; }
+    .hero p { max-width: 650px; margin: auto; color: #bbb; line-height: 1.6; }
+
+    .btn {
+      display: inline-block;
+      margin-top: 30px;
+      padding: 14px 32px;
+      background: #fff;
+      color: #000;
+      border-radius: 10px;
+      text-decoration: none;
+      font-weight: 600;
+      transition: .25s;
+      position: relative;
+      overflow: hidden;
+    }
+    .btn:hover { transform: translateY(-2px); }
+
+    .section-title {
+      text-align: center;
+      font-size: 2rem;
+      margin-bottom: 40px;
+      font-weight: 700;
+      position: relative;
+      z-index: 1;
+    }
+
+    .services, .pricing {
+      padding: 70px 40px;
+      max-width: 1100px;
+      margin: auto;
+      display: grid;
+      grid-template-columns: repeat(auto-fit,minmax(260px,1fr));
+      gap: 25px;
+      position: relative;
+      z-index: 1;
+    }
+
+    .card {
+      position: relative;
+      background: #111;
+      border: 1px solid #333;
+      border-radius: 16px;
+      padding: 28px;
+      transition: .25s;
+      opacity: 0;
+      transform: translateY(20px);
+    }
+    .card.show { opacity: 1; transform: translateY(0); }
+    .card:hover { transform: translateY(-8px); border-color: #555; }
+    .card h3 { margin: 0 0 10px; color: #fff; }
+    .card p { color: #bbb; font-size: .95rem; }
+
+    .price { font-size: 2rem; font-weight: 800; margin: 15px 0; }
+
+    .contact {
+      text-align: center;
+      padding: 80px 20px;
+      position: relative;
+      z-index: 1;
+    }
+
+    footer {
+      border-top: 1px solid #222;
+      text-align: center;
+      padding: 25px;
+      color: #777;
+      font-size: .9rem;
+      margin-top: 40px;
+      position: relative;
+      z-index: 1;
+    }
+
+    .badge {
+      position: absolute;
+      top: -12px;
+      left: 20px;
+      background: #fff;
+      color: #000;
+      font-size: 0.7rem;
+      font-weight: 700;
+      padding: 4px 10px;
+      border-radius: 999px;
+      letter-spacing: .5px;
+    }
+
+    @keyframes fadeUp {
+      from { opacity: 0; transform: translateY(25px); }
+      to { opacity: 1; transform: translateY(0); }
+    }
+  
+
+    /* splatter on scroll */
+    .splatter {
+      position: fixed;
+      width: 120px;
+      height: 120px;
+      background: radial-gradient(circle at 40% 40%, #ff1a1a 0%, #7a0000 40%, transparent 70%);
+      filter: blur(1px);
+      opacity: 0;
+      pointer-events: none;
+      transform: scale(.6);
+      transition: opacity .6s, transform .6s;
+      z-index: 2;
+    }
+    .splatter.show { opacity: .9; transform: scale(1); }
+
+    /* drip over text edges */
+    .drip-edge {
+      position: relative;
+      overflow: hidden;
+    }
+    .drip-edge::after {
+      content: "";
+      position: absolute;
+      top: -20px;
+      left: 0;
+      width: 100%;
+      height: 40px;
+      background: linear-gradient(#7a0000,#ff1a1a);
+      mask: radial-gradient(circle at 10% 100%, black 60%, transparent 70%),
+            radial-gradient(circle at 30% 100%, black 60%, transparent 70%),
+            radial-gradient(circle at 50% 100%, black 60%, transparent 70%),
+            radial-gradient(circle at 70% 100%, black 60%, transparent 70%),
+            radial-gradient(circle at 90% 100%, black 60%, transparent 70%);
+      animation: dripEdge 6s linear infinite;
+      opacity:.9;
+    }
+    @keyframes dripEdge {
+      0% { transform: translateY(-10px); }
+      50% { transform: translateY(10px); }
+      100% { transform: translateY(-10px); }
+    }
+
+    /* mouse smear */
+    .smear {
+      position: fixed;
+      width: 40px;
+      height: 40px;
+      border-radius: 50%;
+      background: radial-gradient(circle, #ff1a1a 0%, #7a0000 60%, transparent 70%);
+      pointer-events: none;
+      mix-blend-mode: screen;
+      opacity: .6;
+      z-index: 3;
+      transform: translate(-50%,-50%);
+    }
+  </style>
+</head>
+<body>
+
+<!-- horror blood layer -->
+<div class="blood">
+  <div class="drop" style="left:2%; animation-duration:7s; animation-delay:0s; height:160px"></div>
+  <div class="drop" style="left:8%; animation-duration:9s; animation-delay:1s; height:130px"></div>
+  <div class="drop" style="left:14%; animation-duration:6.5s; animation-delay:2s; height:170px"></div>
+  <div class="drop" style="left:22%; animation-duration:8s; animation-delay:.5s; height:150px"></div>
+  <div class="drop" style="left:30%; animation-duration:7.5s; animation-delay:1.2s; height:180px"></div>
+  <div class="drop" style="left:40%; animation-duration:10s; animation-delay:2.4s; height:140px"></div>
+  <div class="drop" style="left:50%; animation-duration:6.8s; animation-delay:.8s; height:165px"></div>
+  <div class="drop" style="left:60%; animation-duration:8.6s; animation-delay:1.7s; height:155px"></div>
+  <div class="drop" style="left:70%; animation-duration:7.2s; animation-delay:2.1s; height:175px"></div>
+  <div class="drop" style="left:80%; animation-duration:9.4s; animation-delay:.3s; height:150px"></div>
+  <div class="drop" style="left:90%; animation-duration:6.9s; animation-delay:1.6s; height:185px"></div>
+</div>
+  <div class="drop" style="left:15%; animation-delay:1s"></div>
+  <div class="drop" style="left:28%; animation-delay:2s"></div>
+  <div class="drop" style="left:42%; animation-delay:.5s"></div>
+  <div class="drop" style="left:58%; animation-delay:1.5s"></div>
+  <div class="drop" style="left:73%; animation-delay:2.2s"></div>
+  <div class="drop" style="left:87%; animation-delay:.8s"></div>
+</div>
+
+<header>
+  <div class="logo">WizrdTweaks</div>
+  <nav>
+    <a href="#">Home</a>
+    <a href="#services">Services</a>
+    <a href="#pricing">Pricing</a>
+    <a href="#contact">Contact</a>
+  </nav>
+</header>
+
+<section class="hero drip-edge">
+  <h1>Premium PC Optimization & Tweaks</h1>
+  <p>WizrdTweaks delivers high‑performance system optimization, gaming tweaks, and latency reduction services designed to maximize FPS and responsiveness.</p>
+  <a href="#pricing" class="btn">View Pricing</a>
+</section>
+
+<h2 class="section-title drip-edge" id="services">Services</h2>
+<section class="services">
+  <div class="card">
+    <div class="badge">MOST POPULAR</div>
+    <h3>FPS Boost</h3>
+    <p>Deep Windows and driver optimization focused on higher frame rates and smoother gameplay.</p>
+  </div>
+  <div class="card">
+    <h3>Latency Reduction</h3>
+    <p>Advanced system tweaks to reduce input delay, DPC latency, and stutter issues.</p>
+  </div>
+  <div class="card">
+    <h3>Full PC Tune</h3>
+    <p>Complete system cleanup, registry optimization, and performance configuration.</p>
+  </div>
+</section>
+
+<h2 class="section-title drip-edge" id="pricing">Pricing</h2>
+<section class="pricing">
+  <div class="card">
+    <h3>FPS Boost</h3>
+    <div class="price">$8.99</div>
+    <p>High FPS optimization pack.</p>
+    <a href="https://payhip.com/b/9dgpP" class="btn">Checkout</a>
+  </div>
+  <div class="card">
+    <h3>Latency Reduction</h3>
+    <div class="price">$10.99</div>
+    <p>Advanced input delay & DPC fixes.</p>
+    <a href="https://payhip.com/b/9dgpP" class="btn">Checkout</a>
+  </div>
+  <div class="card">
+    <h3>Full PC Tune</h3>
+    <div class="price">$20.00</div>
+    <p>Complete performance overhaul.</p>
+    <a href="https://payhip.com/b/9dgpP" class="btn">Checkout</a>
+  </div>
+</section>
+
+<section id="contact" class="contact">
+  <h2 class="section-title drip-edge">Contact / Order</h2>
+  <p>Join Discord to purchase or ask questions.</p>
+  <a href="https://discord.gg/SZbQg8NzBR" class="btn">Join Discord</a>
+</section>
+
+<footer>
+  © 2026 WizrdTweaks. All rights reserved.
+</footer>
+
+<script>
+  const cards = document.querySelectorAll('.card');
+  const observer = new IntersectionObserver(entries => {
+    entries.forEach(entry => {
+      if (entry.isIntersecting) entry.target.classList.add('show');
+    });
+  }, { threshold: 0.15 });
+  cards.forEach(card => observer.observe(card));
+
+  // splatter on scroll
+  const splatters = [];
+  window.addEventListener('scroll', () => {
+    if (Math.random() < 0.2) {
+      const s = document.createElement('div');
+      s.className = 'splatter';
+      s.style.left = Math.random()*100 + 'vw';
+      s.style.top = (window.scrollY + Math.random()*window.innerHeight) + 'px';
+      document.body.appendChild(s);
+      requestAnimationFrame(()=>s.classList.add('show'));
+      setTimeout(()=>s.remove(), 2000);
+    }
+  });
+
+  // mouse smear
+  document.addEventListener('mousemove', e => {
+    const m = document.createElement('div');
+    m.className = 'smear';
+    m.style.left = e.clientX + 'px';
+    m.style.top = e.clientY + 'px';
+    document.body.appendChild(m);
+    setTimeout(()=>m.remove(), 300);
+  });
+</script>
+
+</body>
+</html>
